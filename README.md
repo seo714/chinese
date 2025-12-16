@@ -1,28 +1,35 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <title>Language Select</title>
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
-      font-family: Arial, sans-serif;
-    }
+<div align="center" style="margin-top: 40px;">
 
-    button {
-      padding: 20px 40px;
-      font-size: 24px;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <button>Eng</button>
-  <button>CHI</button>
-</body>
-</html>
+  <h1 style="color: black; font-size: 48px; margin-bottom: 40px;">
+    CHINESE
+  </h1>
+
+  <a href="grammar.html"
+     style="
+       display: inline-block;
+       padding: 15px 30px;
+       margin: 10px;
+       font-size: 18px;
+       color: white;
+       background-color: black;
+       text-decoration: none;
+       border-radius: 8px;
+     ">
+    GRAMMAR
+  </a>
+
+  <a href="vocab.html"
+     style="
+       display: inline-block;
+       padding: 15px 30px;
+       margin: 10px;
+       font-size: 18px;
+       color: white;
+       background-color: black;
+       text-decoration: none;
+       border-radius: 8px;
+     ">
+    WORDS
+  </a>
+
+</div>

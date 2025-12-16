@@ -1,54 +1,67 @@
-<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chinese Words</title>
+  <title>CHINESE</title>
 
+  <!-- Google Font : Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- SheetJS -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Poppins', sans-serif; /* ✅ 글씨체 변경 */
       background-color: #f5f5f5;
       display: flex;
       justify-content: center;
     }
 
     .container {
-      margin-top: 40px;
+      margin-top: 32px;
       width: 100%;
-      max-width: 600px;   /* 모바일 기준 폭 */
+      max-width: 600px;
       padding: 0 12px;
       text-align: center;
     }
 
+    /* 제목 */
+    .title {
+      font-size: 28px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      margin-bottom: 24px;
+    }
+
     table {
-      width: 100%;        /* 화면에 맞게 */
+      width: 100%;
       border-collapse: collapse;
       background: white;
     }
 
     td {
-      border: none;
-      padding: 12px 6px;  /* 모바일 터치 고려 */
+      border: none;                 /* 줄 제거 */
+      padding: 12px 6px;
       text-align: center;
-      font-size: 17px;    /* 글씨 살짝 키움 */
+      font-size: 17px;
       word-break: break-word;
     }
 
-    /* 📱 아주 작은 화면 */
+    /* 모바일에서 글씨 살짝 더 크게 */
     @media (max-width: 480px) {
       td {
         font-size: 18px;
-        padding: 14px 4px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
+    <!-- ✅ CHINESE 대문자 제목 -->
+    <div class="title">CHINESE</div>
+
     <div id="table-container"></div>
   </div>
 
@@ -72,7 +85,7 @@
       data.forEach(row => {
         html += "<tr>";
         row.forEach((cell, colIndex) => {
-          // 2열 제거
+          // 2번째 열 제거
           if (colIndex === 1) return;
           html += `<td>${cell ?? ""}</td>`;
         });

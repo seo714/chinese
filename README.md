@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
@@ -12,47 +11,29 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
     }
 
     .container {
-      width: 100%;
+      margin-top: 60px;
       text-align: center;
-      margin-top: 40px;
-    }
-
-    h1 {
-      font-size: 48px;
-      margin: 0;
-    }
-
-    h2 {
-      font-size: 24px;
-      margin-top: 10px;
-      color: #555;
     }
 
     table {
-      margin: 40px auto;
       border-collapse: collapse;
       background: white;
     }
 
-    th, td {
+    td {
       border: 1px solid #ccc;
-      padding: 8px 14px;
+      padding: 10px 18px;
       text-align: center;
-    }
-
-    th {
-      background-color: #eee;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>CHINESE</h1>
-    <h2>WORDS</h2>
-
     <div id="table-container"></div>
   </div>
 
@@ -62,27 +43,24 @@
       .then(data => {
         const workbook = XLSX.read(data, { type: "array" });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+        let json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+
+        // ❌ 첫 번째 행 제거
+        json.shift();
+
         renderTable(json);
       });
 
     function renderTable(data) {
       let html = "<table>";
 
-      data.forEach((row, rowIndex) => {
+      data.forEach(row => {
         html += "<tr>";
-
         row.forEach((cell, colIndex) => {
-          // ❌ 2번째 열(colIndex === 1) 제외
+          // ❌ 2번째 열 제외 (원하면 이 줄 지워도 됨)
           if (colIndex === 1) return;
-
-          if (rowIndex === 0) {
-            html += `<th>${cell ?? ""}</th>`;
-          } else {
-            html += `<td>${cell ?? ""}</td>`;
-          }
+          html += `<td>${cell ?? ""}</td>`;
         });
-
         html += "</tr>";
       });
 

@@ -1,35 +1,90 @@
-<div align="center" style="margin-top: 40px;">
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>Chinese Words</title>
 
-  <h1 style="color: black; font-size: 48px; margin-bottom: 40px;">
-    CHINESE
-  </h1>
+  <!-- SheetJS (xlsx 읽기용) -->
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 
-  <a href="grammar.html"
-     style="
-       display: inline-block;
-       padding: 15px 30px;
-       margin: 10px;
-       font-size: 18px;
-       color: white;
-       background-color: black;
-       text-decoration: none;
-       border-radius: 8px;
-     ">
-    GRAMMAR
-  </a>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
 
-  <a href="vocab.html"
-     style="
-       display: inline-block;
-       padding: 15px 30px;
-       margin: 10px;
-       font-size: 18px;
-       color: white;
-       background-color: black;
-       text-decoration: none;
-       border-radius: 8px;
-     ">
-    WORDS
-  </a>
+    .container {
+      width: 100%;
+      text-align: center;
+      margin-top: 40px;
+    }
 
-</div>
+    h1 {
+      font-size: 48px;
+      margin: 0;
+    }
+
+    h2 {
+      font-size: 24px;
+      margin-top: 10px;
+      color: #555;
+    }
+
+    table {
+      margin: 40px auto;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px 14px;
+    }
+
+    th {
+      background-color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>CHINESE</h1>
+    <h2>WORDS</h2>
+
+    <div id="table-container"></div>
+  </div>
+
+  <script>
+    fetch("final.xlsx")
+      .then(res => res.arrayBuffer())
+      .then(data => {
+        const workbook = XLSX.read(data, { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        const sheet = workbook.Sheets[sheetName];
+
+        const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+        renderTable(json);
+      });
+
+    function renderTable(data) {
+      let html = "<table>";
+
+      data.forEach((row, rowIndex) => {
+        html += "<tr>";
+        row.forEach(cell => {
+          if (rowIndex === 0) {
+            html += `<th>${cell ?? ""}</th>`;
+          } else {
+            html += `<td>${cell ?? ""}</td>`;
+          }
+        });
+        html += "</tr>";
+      });
+
+      html += "</table>";
+      document.getElementById("table-container").innerHTML = html;
+    }
+  </script>
+</body>
+</html>

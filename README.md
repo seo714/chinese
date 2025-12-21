@@ -1,104 +1,88 @@
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>WORDS</title>
-
-  <!-- Google Font : Poppins -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
-
-  <!-- SheetJS -->
-  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
-
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chinese Phrases</title>
+<style>
     body {
-      margin: 0;
-      background-color: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      font-family: 'Poppins', system-ui, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background-color: #f5f5f5;
     }
-
     .container {
-      margin-top: 32px;
-      width: 100%;
-      max-width: 600px;
-      padding: 0 12px;
-      text-align: center;
+        width: 90%;
+        max-width: 600px;
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        border-radius: 12px;
+        overflow-x: auto;
     }
-
-    .title {
-      font-size: 28px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      margin-bottom: 24px;
-    }
-
     table {
-      width: 100%;
-      border-collapse: collapse;
-      table-layout: fixed; /* ✅ 열 균등 */
+        width: 100%;
+        border-collapse: collapse;
     }
-
-    tr {
-      width: 100%;
+    table, th, td {
+        border: 1px solid #ddd;
     }
-
-    td {
-      width: 100%;
-      display: block;          /* ✅ 칸 느낌 제거 */
-      border: none;
-      padding: 14px 8px;
-      font-size: 17px;
-      background: white;       /* 행 단위 배경 */
-      margin-bottom: 8px;      /* 행 간격 */
-      word-break: break-word;
+    th, td {
+        padding: 8px;
+        text-align: center;
     }
-
-    /* 모바일에서 살짝 더 크게 */
-    @media (max-width: 480px) {
-      td {
-        font-size: 18px;
-      }
+    th {
+        background-color: #f2f2f2;
     }
-  </style>
+    @media (max-width: 600px) {
+        th, td {
+            font-size: 14px;
+            padding: 6px;
+        }
+    }
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="title">CHINESE</div>
-    <div id="table-container"></div>
-  </div>
+<div class="container">
+    <table id="phraseTable">
+        <thead></thead>
+        <tbody></tbody>
+    </table>
+</div>
 
-  <script>
-    fetch("final.xlsx")
-      .then(res => res.arrayBuffer())
-      .then(data => {
-        const workbook = XLSX.read(data, { type: "array" });
-        const sheet = workbook.Sheets[workbook.SheetNames[0]];
-        let json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+<script>
+fetch('chinese_phrases.csv')
+.then(response => response.text())
+.then(data => {
+    const lines = data.split('\n').filter(line => line.trim() !== '');
+    const table = document.getElementById('phraseTable');
+    const thead = table.querySelector('thead');
+    const tbody = table.querySelector('tbody');
 
-        // 첫 행 제거
-        json.shift();
+    // 헤더
+    const headers = lines[0].split(',');
+    const trHead = document.createElement('tr');
+    headers.forEach(h => {
+        const th = document.createElement('th');
+        th.textContent = h;
+        trHead.appendChild(th);
+    });
+    thead.appendChild(trHead);
 
-        renderTable(json);
-      });
-
-    function renderTable(data) {
-      let html = "<table>";
-
-      data.forEach(row => {
-        html += "<tr>";
-        row.forEach((cell, colIndex) => {
-          // 2번째 열 제거
-          if (colIndex === 1) return;
-          html += `<td>${cell ?? ""}</td>`;
+    // 데이터
+    for(let i=1; i<lines.length; i++){
+        const tr = document.createElement('tr');
+        const cells = lines[i].split(',');
+        cells.forEach(c => {
+            const td = document.createElement('td');
+            td.textContent = c;
+            tr.appendChild(td);
         });
-        html += "</tr>";
-      });
-
-      html += "</table>";
-      document.getElementById("table-container").innerHTML = html;
+        tbody.appendChild(tr);
     }
-  </script>
+});
+</script>
 </body>
 </html>
